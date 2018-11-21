@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.WorkerRepository;
 
+import java.util.List;
+
 @Controller
 public class WorkerController {
 
@@ -28,5 +30,12 @@ public class WorkerController {
     public String addWorker(Worker worker){
         workerRepository.save(worker);
         return "success";
+    }
+
+    @GetMapping("allWorkers")
+    public String allWorkers(Model model){
+        List<Worker> allWorkers = workerRepository.findAll();
+        model.addAttribute("workers", allWorkers);
+        return "allWorkers";
     }
 }

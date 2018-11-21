@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All workers</title>
+</head>
+<body>
+    <ol>
+        <li th:each="worker: ${workers}" th:text="|${worker.name} ${worker.surname}|"></li>
+    </ol>
+</body>
+</html>
