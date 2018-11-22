@@ -1,6 +1,7 @@
 package pl.pm.workscheduleapp.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "workers")
@@ -10,6 +11,17 @@ public class Worker {
     private Long id;
     private String name;
     private String surname;
+    @OneToMany
+    @JoinColumn(name = "worker_id")
+    private List<Schedule> schedules;
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
+    }
 
     public Long getId() {
         return id;
