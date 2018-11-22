@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
     Optional<Worker> findBySurnameAndNameIgnoreCase(String surname, String name);
+    int deleteBySurnameAndNameIgnoreCase(String surname, String name);
 }

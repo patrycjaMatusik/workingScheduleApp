@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.WorkerRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +47,18 @@ public class WorkerController {
         Optional<Worker> workerBySurnameAndName = workerRepository.findBySurnameAndNameIgnoreCase(surname, name);
         workerBySurnameAndName.ifPresent(worker -> model.addAttribute("worker", worker));
         return workerBySurnameAndName.map(worker -> "singleWorker").orElse("noWorker");
+    }
+
+    @Transactional
+    @GetMapping("/delete/{surname}/{name}")
+    public String deleteWorker(Model model, @PathVariable("surname") String surname,@PathVariable("name") String name){
+        int wasDeleted = workerRepository.deleteBySurnameAndNameIgnoreCase(surname, name);
+        model.addAttribute("workerSurname", surname);
+        model.addAttribute("workerName", name);
+        if(wasDeleted==1){
+            return ("successfullyDeleted");
+        }else{
+            return ("errorWhileDeleting");
+        }
     }
 }
