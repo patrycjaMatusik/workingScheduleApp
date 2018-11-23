@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.WorkerRepository;
 import pl.pm.workscheduleapp.service.WorkerService;
@@ -36,11 +37,16 @@ public class WorkerController {
         return "success";
     }
 
-    @GetMapping("allWorkers")
+    @GetMapping("/")
     public String allWorkers(Model model){
         List<Worker> allWorkers = workerRepository.findAll();
         model.addAttribute("workers", allWorkers);
         return "allWorkers";
+    }
+
+    @RequestMapping(value = "/processMainPageForm", params = "delete", method = RequestMethod.POST)
+    public ModelAndView delete(Worker worker){
+        return new ModelAndView("redirect:/delete/"+ worker.getSurname() + "/" + worker.getName());
     }
 
     @GetMapping("/worker/{surname}/{name}")

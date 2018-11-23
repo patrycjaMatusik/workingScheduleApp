@@ -6,7 +6,15 @@
 </head>
 <body>
     <ol>
-        <li th:each="worker: ${workers}" th:text="|${worker.name} ${worker.surname}|"></li>
+        <th:block th:each="worker: ${workers}">
+            <form th:action="@{/processMainPageForm}" method="post" th:object="${worker}">
+                <li th:text="|${worker.name} ${worker.surname}|"></li>
+                <input type="hidden" th:value="*{surname}" name="surname"/>
+                <input type="hidden" th:value="*{name}" name="name"/>
+                <button type="submit" name="delete" value="Delete"></button>
+                <button type="submit" name="details" value="Details"></button>
+            </form>
+        </th:block>
     </ol>
 </body>
 </html>
