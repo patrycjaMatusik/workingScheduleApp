@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add schedule</title>
+</head>
+<body>
+    <h1>Add new schedule</h1>
+    <form th:action="@{/saveSchedule}" th:object="${schedule}" method="post">
+        <input type="date" th:field="*{work_date}" placeholder=""><br>
+        <input type="time" th:field="*{start_working_hour}" placeholder="Start"><br>
+        <input type="time" th:field="*{end_working_hour}" placeholder="End"><br>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
