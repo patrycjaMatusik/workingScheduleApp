@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
+@Table(name = "schedules")
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

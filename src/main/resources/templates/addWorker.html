@@ -9,6 +9,8 @@
     <form th:action="@{/save}" th:object="${worker}" method="post">
         <input type="text" th:field="*{name}" placeholder="Name"><br>
         <input type="text" th:field="*{surname}" placeholder="Surname"><br>
+        <input type="text" th:field="*{address}" placeholder="Address"><br>
+        <input type="text" th:field="*{phoneNumber}" placeholder="Phone number"><br>
         <button type="submit">Save</button>
     </form>
 </body>

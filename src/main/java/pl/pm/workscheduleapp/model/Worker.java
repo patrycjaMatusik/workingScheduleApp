@@ -9,8 +9,13 @@ public class Worker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 100)
     private String name;
+    @Column(length = 100)
     private String surname;
+    private String address;
+    @Column(length = 12)
+    private String phoneNumber;
     @OneToMany
     @JoinColumn(name = "worker_id")
     private List<Schedule> schedules;
@@ -45,5 +50,21 @@ public class Worker {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
