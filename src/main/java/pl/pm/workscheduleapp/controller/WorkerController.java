@@ -34,7 +34,7 @@ public class WorkerController {
     @PostMapping("/save")
     public String addWorker(Worker worker){
         workerRepository.save(worker);
-        return "success";
+        return "/success";
     }
 
     @GetMapping("/")
@@ -47,6 +47,11 @@ public class WorkerController {
     @RequestMapping(value = "/processMainPageForm", params = "delete", method = RequestMethod.POST)
     public ModelAndView delete(Worker worker){
         return new ModelAndView("redirect:/delete/"+ worker.getSurname() + "/" + worker.getName());
+    }
+
+    @RequestMapping(value = "/processMainPageForm", params = "details", method = RequestMethod.POST)
+    public ModelAndView details(Worker worker){
+        return new ModelAndView("redirect:/worker/"+ worker.getSurname() + "/" + worker.getName());
     }
 
     @GetMapping("/worker/{surname}/{name}")
@@ -69,10 +74,15 @@ public class WorkerController {
         }
     }
 
+    @RequestMapping(value = "/processSingleWorker", params = "editWorker", method = RequestMethod.POST)
+    public String editSingleWorker(Model model, Worker worker){
+        model.addAttribute("worker", worker);
+        return "updateWorker";
+    }
+
     @GetMapping("/update/{surname}/{name}")
-    @ResponseBody
-    public String updateWorker(@PathVariable(name = "surname") String surname, @PathVariable(name = "name") String name, @RequestParam(value = "newSurname") String newSurname, @RequestParam(value = "newName") String newName){
-        workerService.updateWorker(surname, name, newSurname, newName);
-        return "Updated";
+    public String updateWorker(@PathVariable(name = "surname") String surname, @PathVariable(name = "name") String name, Worker worker){
+        workerService.updateWorker(surname, name, worker.getSurname(), worker.getName(), worker.getAddress(), worker.getPhoneNumber());
+        return "successUpdating";
     }
 }

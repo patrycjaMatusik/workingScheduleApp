@@ -17,10 +17,12 @@ public class WorkerService {
     }
 
     @Transactional
-    public void updateWorker(String surname, String name, String newSurname, String newName){
+    public void updateWorker(String surname, String name, String newSurname, String newName, String neAddress, String newPhoneNumber){
         Optional<Worker> bySurnameAndNameIgnoreCase = workerRepository.findBySurnameAndNameIgnoreCase(surname, name);
         Worker workerToUpdate = bySurnameAndNameIgnoreCase.get();
         workerToUpdate.setName(newName);
         workerToUpdate.setSurname(newSurname);
+        workerToUpdate.setAddress(neAddress);
+        workerToUpdate.setPhoneNumber(newPhoneNumber);
     }
 }

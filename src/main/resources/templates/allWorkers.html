@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>All workers</title>
 </head>
 <body>
+<th:block th:each="worker: ${workers}">
     <ol>
-        <th:block th:each="worker: ${workers}">
-            <form th:action="@{/processMainPageForm}" method="post" th:object="${worker}">
-                <li th:text="|${worker.name} ${worker.surname}|"></li>
-                <input type="hidden" th:value="*{surname}" name="surname"/>
-                <input type="hidden" th:value="*{name}" name="name"/>
-                <button type="submit" name="delete" value="Delete"></button>
-                <button type="submit" name="details" value="Details"></button>
-            </form>
-        </th:block>
+        <form th:action="@{/processMainPageForm}" method="post" th:object="${worker}">
+            <li th:text="|${worker.name} ${worker.surname}|"></li>
+            <input type="hidden" th:value="*{surname}" name="surname"/>
+            <input type="hidden" th:value="*{name}" name="name"/>
+            <button type="submit" class="btn btn-primary" name="delete">Delete</button>
+            <button type="submit" class="btn btn-primary" name="details">Details</button>
+        </form>
     </ol>
+</th:block>
+<form th:action="@{/add}" method="get">
+    <button type="submit" name="addWorker" class="btn btn-primary">Add new worker</button>
+</form>
 </body>
 </html>
