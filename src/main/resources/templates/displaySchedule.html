@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="../styles/mystyle.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title >Schedule</title>
+
+    <style>
+    .css-serial {
+    counter-reset: serial-number; /* Set the serial number counter to 0 */
+    }
+    .css-serial td:first-child:before {
+    counter-increment: serial-number; /* Increment the serial number counter */
+    content: counter(serial-number); /* Display the counter */
+    }
+    </style>
+
+</head>
+<body>
+    <h1 th:text="|${name} ${surname}'s schedule|"></h1>
+
+    <div class="container" margin="auto" width="300px">
+    <table class="table table-bordered css-serial">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th scope="col">Date</th>
+            <th scope="col">Start</th>
+            <th scope="col">End</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="schedule: ${schedules}">
+            <td>&nbsp;</td>
+            <td th:text="${schedule.work_date}"></td>
+            <td th:text="${schedule.start_working_hour}"></td>
+            <td th:text="${schedule.end_working_hour}"></td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</body>
+</html>

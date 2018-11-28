@@ -5,7 +5,7 @@
     <title>Edit</title>
 </head>
 <body>
-    <h1 th:text="|Edit ${worker.name} ${worker.surname}\'s data|"></h1>
+    <h1 th:text="|Edit ${worker.name} ${worker.surname}'s data|"></h1>
     <form th:action="@{/update/__${worker.surname}__/__${worker.name}__}" th:object="${worker}" method="get">
         <input type="text" th:field="*{name}" th:value="${worker.name}"><br>
         <input type="text" th:field="*{surname}" th:value="${worker.surname}"><br>

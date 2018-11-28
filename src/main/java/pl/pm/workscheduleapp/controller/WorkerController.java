@@ -85,4 +85,13 @@ public class WorkerController {
         workerService.updateWorker(surname, name, worker.getSurname(), worker.getName(), worker.getAddress(), worker.getPhoneNumber());
         return "successUpdating";
     }
+
+    @RequestMapping(value = "/processSingleWorker", params = "displayWorkersSchedule", method = RequestMethod.POST)
+    public String displaySchedule(Model model, Worker worker){
+        Optional<Worker> workerBySurnameAndName = workerRepository.findBySurnameAndNameIgnoreCase(worker.getSurname(), worker.getName());
+        workerBySurnameAndName.ifPresent(loadedWorker -> model.addAttribute("schedules", loadedWorker.getSchedules()));
+        model.addAttribute("name", worker.getName());
+        model.addAttribute("surname", worker.getSurname());
+        return workerBySurnameAndName.map(loadedWorker -> "displaySchedule").orElse("noWorker");
+    }
 }
