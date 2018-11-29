@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "schedules")
@@ -17,15 +18,15 @@ public class Schedule {
     private Date start_working_hour;
     @Temporal(TemporalType.TIME)
     private Date end_working_hour;
-    @ManyToOne
-    private Worker worker;
+    @ManyToMany
+    private List<Worker> workers;
 
-    public Worker getWorker() {
-        return worker;
+    public List<Worker> getWorkers() {
+        return workers;
     }
 
-    public void setWorker(Worker worker) {
-        this.worker = worker;
+    public void setWorkers(List<Worker> workers) {
+        this.workers = workers;
     }
 
     public Long getId() {
@@ -48,6 +49,10 @@ public class Schedule {
         }
     }
 
+    public void setWork_date(Date work_date) {
+        this.work_date = work_date;
+    }
+
     public Date getStart_working_hour() {
         return start_working_hour;
     }
@@ -61,6 +66,10 @@ public class Schedule {
         }
     }
 
+    public void setStart_working_hour(Date start_working_hour) {
+        this.start_working_hour = start_working_hour;
+    }
+
     public Date getEnd_working_hour() {
         return end_working_hour;
     }
@@ -71,5 +80,9 @@ public class Schedule {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setEnd_working_hour(Date end_working_hour) {
+        this.end_working_hour = end_working_hour;
     }
 }

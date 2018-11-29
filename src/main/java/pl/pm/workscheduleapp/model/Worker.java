@@ -16,8 +16,7 @@ public class Worker {
     private String address;
     @Column(length = 12)
     private String phoneNumber;
-    @OneToMany
-    @JoinColumn(name = "worker_id")
+    @ManyToMany(mappedBy = "workers")
     private List<Schedule> schedules;
 
     public List<Schedule> getSchedules() {

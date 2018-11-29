@@ -23,7 +23,7 @@
 
 </head>
 <body>
-    <h1 th:text="|${name} ${surname}'s schedule|"></h1>
+    <h1 th:text="|${worker.name} ${worker.surname}'s schedule|"></h1>
 
     <div class="container" margin="auto" width="300px">
     <table class="table table-bordered css-serial">
@@ -33,6 +33,7 @@
             <th scope="col">Date</th>
             <th scope="col">Start</th>
             <th scope="col">End</th>
+            <th scope="col">Modify</th>
         </tr>
         </thead>
         <tbody>
@@ -41,6 +42,11 @@
             <td th:text="${schedule.work_date}"></td>
             <td th:text="${schedule.start_working_hour}"></td>
             <td th:text="${schedule.end_working_hour}"></td>
+            <form th:action="@{/processSchedules}" method="post" th:object="${schedule}">
+            <input type="hidden" th:value="*{id}" name="id"/>
+                <td><button type="submit" class="btn btn-primary" name="delete">Delete</button></td>
+            <td><button type="submit" class="btn btn-primary" name="edit">Edit</button></td>
+            </form>
         </tr>
         </tbody>
     </table>

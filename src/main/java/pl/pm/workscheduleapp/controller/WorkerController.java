@@ -90,8 +90,7 @@ public class WorkerController {
     public String displaySchedule(Model model, Worker worker){
         Optional<Worker> workerBySurnameAndName = workerRepository.findBySurnameAndNameIgnoreCase(worker.getSurname(), worker.getName());
         workerBySurnameAndName.ifPresent(loadedWorker -> model.addAttribute("schedules", loadedWorker.getSchedules()));
-        model.addAttribute("name", worker.getName());
-        model.addAttribute("surname", worker.getSurname());
+        model.addAttribute("worker", worker);
         return workerBySurnameAndName.map(loadedWorker -> "displaySchedule").orElse("noWorker");
     }
 }
