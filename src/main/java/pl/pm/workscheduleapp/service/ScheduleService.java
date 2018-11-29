@@ -5,7 +5,6 @@ import pl.pm.workscheduleapp.model.Schedule;
 import pl.pm.workscheduleapp.repository.ScheduleRepository;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -18,12 +17,12 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void updateSchedule(Long id, Date workDate, Date startWorkingHour, Date endWorkingHour){
+    public void updateSchedule(Long id, String workDate, String startWorkingHour, String endWorkingHour){
         Optional<Schedule> byId = scheduleRepository.findById(id);
         Schedule scheduleToUpdate = byId.get();
-        /*scheduleToUpdate.setWork_date2(workDate);
-        scheduleToUpdate.setStart_working_hour2(startWorkingHour);
-        scheduleToUpdate.setEnd_working_hour2(endWorkingHour);*/
+        scheduleToUpdate.setWork_date(workDate);
+        scheduleToUpdate.setStart_working_hour(startWorkingHour);
+        scheduleToUpdate.setEnd_working_hour(endWorkingHour);
     }
 
 }

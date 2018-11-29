@@ -41,7 +41,7 @@ public class ScheduleController {
 
     @GetMapping("/editSchedule/{id}")
     public String updateSchedule(@PathVariable(name = "id") Long id, Schedule schedule){
-        //scheduleService.updateSchedule(id, schedule.getWork_date(), schedule.getStart_working_hour(), schedule.getEnd_working_hour());
+        scheduleService.updateSchedule(id, schedule.getWork_date(), schedule.getStart_working_hour(), schedule.getEnd_working_hour());
         return "successUpdating";
     }
 }
