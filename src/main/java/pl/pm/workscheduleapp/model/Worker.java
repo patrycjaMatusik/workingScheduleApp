@@ -16,7 +16,15 @@ public class Worker {
     private String address;
     @Column(length = 12)
     private String phoneNumber;
-    @ManyToMany(mappedBy = "workers")
+    @ManyToMany(cascade =
+            {
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+            })
+    @JoinTable(name = "workers_schedules",
+            joinColumns = @JoinColumn(name = "worker_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
+
     private List<Schedule> schedules;
 
     public List<Schedule> getSchedules() {
@@ -66,4 +74,5 @@ public class Worker {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
 }

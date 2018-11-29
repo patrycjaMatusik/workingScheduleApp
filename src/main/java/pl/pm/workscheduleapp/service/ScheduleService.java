@@ -2,6 +2,7 @@ package pl.pm.workscheduleapp.service;
 
 import org.springframework.stereotype.Service;
 import pl.pm.workscheduleapp.model.Schedule;
+import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.ScheduleRepository;
 
 import javax.transaction.Transactional;
@@ -23,6 +24,11 @@ public class ScheduleService {
         scheduleToUpdate.setWork_date(workDate);
         scheduleToUpdate.setStart_working_hour(startWorkingHour);
         scheduleToUpdate.setEnd_working_hour(endWorkingHour);
+    }
+
+    @Transactional
+    public void deleteScheduleFromWorker(Schedule schedule, Worker worker){
+        worker.getSchedules().remove(schedule);
     }
 
 }

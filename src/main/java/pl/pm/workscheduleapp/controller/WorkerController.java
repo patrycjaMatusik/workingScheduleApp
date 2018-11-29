@@ -93,4 +93,5 @@ public class WorkerController {
         model.addAttribute("worker", worker);
         return workerBySurnameAndName.map(loadedWorker -> "displaySchedule").orElse("noWorker");
     }
+
 }

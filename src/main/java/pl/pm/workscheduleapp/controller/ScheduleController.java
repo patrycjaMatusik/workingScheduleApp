@@ -4,7 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.pm.workscheduleapp.model.Schedule;
+import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.ScheduleRepository;
+import pl.pm.workscheduleapp.repository.WorkerRepository;
 import pl.pm.workscheduleapp.service.ScheduleService;
 
 import java.util.Optional;
@@ -14,10 +16,12 @@ public class ScheduleController {
 
     private ScheduleRepository scheduleRepository;
     private ScheduleService scheduleService;
+    private WorkerRepository workerRepository;
 
-    public ScheduleController(ScheduleRepository scheduleRepository, ScheduleService scheduleService) {
+    public ScheduleController(ScheduleRepository scheduleRepository, ScheduleService scheduleService, WorkerRepository workerRepository) {
         this.scheduleRepository = scheduleRepository;
         this.scheduleService = scheduleService;
+        this.workerRepository = workerRepository;
     }
 
     @GetMapping("/addSchedule")
@@ -43,5 +47,16 @@ public class ScheduleController {
     public String updateSchedule(@PathVariable(name = "id") Long id, Schedule schedule){
         scheduleService.updateSchedule(id, schedule.getWork_date(), schedule.getStart_working_hour(), schedule.getEnd_working_hour());
         return "successUpdating";
+    }
+
+    @RequestMapping(value = "/processSchedules", params = "delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteSchedule(Schedule schedule, Worker worker){
+        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule.getId());
+        Schedule scheduleToRemove = scheduleById.get();
+        Optional<Worker> workerById = workerRepository.findById(worker.getId());
+        Worker workerToRemoveFrom = workerById.get();
+        scheduleService.deleteScheduleFromWorker(scheduleToRemove, workerToRemoveFrom);
+        return "Deleted";
     }
 }

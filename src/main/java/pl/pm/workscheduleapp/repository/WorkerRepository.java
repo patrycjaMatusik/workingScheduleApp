@@ -1,6 +1,7 @@
 package pl.pm.workscheduleapp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import pl.pm.workscheduleapp.model.Worker;
 
 import java.util.Optional;

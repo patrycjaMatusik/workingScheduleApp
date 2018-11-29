@@ -1,6 +1,8 @@
 package pl.pm.workscheduleapp.service;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+import pl.pm.workscheduleapp.model.Schedule;
 import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.WorkerRepository;
 
