@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Manage work schedules</title>
+</head>
+<body>
+
+<h1>Choose option</h1>
+
+<form th:action="@{/scheduleManagement}" method="post">
+    <div class="form-group">
+        <label>List of work schedules</label>
+        <select multiple class="form-control" th:name="schedule_id" th:id="schedule_id">
+            <option th:each="schedule: ${scheduleList}" th:text="|${schedule.work_date} ${schedule.start_working_hour}-${schedule.end_working_hour}|" th:value="${schedule.schedule_id}"></option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary" name="editSchedule">Edit schedule</button>
+    <button type="submit" class="btn btn-primary" name="deleteSchedule">Delete schedule</button>
+    <button type="submit" class="btn btn-primary" name="addSchedule">Add new schedule</button>
+</form>
+
+</body>
+</html>

@@ -9,6 +9,7 @@ import pl.pm.workscheduleapp.repository.ScheduleRepository;
 import pl.pm.workscheduleapp.repository.WorkerRepository;
 import pl.pm.workscheduleapp.service.ScheduleService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,21 +25,15 @@ public class ScheduleController {
         this.workerRepository = workerRepository;
     }
 
-    @GetMapping("/addSchedule")
-    public String addSchedule(Model model){
-        model.addAttribute("schedule", new Schedule());
-        return "addSchedule";
-    }
-
     @PostMapping("/saveSchedule")
     public String addWorker(Schedule schedule){
         scheduleRepository.save(schedule);
         return "success";
     }
 
-    @RequestMapping(value = "/processSchedules", params = "edit", method = RequestMethod.POST)
-    public String editSchedule(Model model, Schedule schedule){
-        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule.getSchedule_id());
+    @RequestMapping(value = "/scheduleManagement", params = "editSchedule", method = RequestMethod.POST)
+    public String editSchedule(Model model, @RequestParam(name = "schedule_id") Long schedule_id){
+        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule_id);
         scheduleById.ifPresent(loadedSchedule -> model.addAttribute("mySchedule", loadedSchedule));
         return scheduleById.map(loadedSchedule -> "updateSchedule").orElse("noSchedule");
     }
@@ -60,8 +55,16 @@ public class ScheduleController {
         return "Deleted";
     }
 
-    @GetMapping("/manageWorkSchedule")
-    public String manageWorkSchedule(){
-        return "manageWorkSchedule";
+    @GetMapping("/manageWorkSchedules")
+    public String manageWorkSchedule(Model model){
+        List<Schedule> allSchedules = scheduleRepository.findAll();
+        model.addAttribute(allSchedules);
+        return "manageWorkSchedules";
+    }
+
+    @RequestMapping(value = "scheduleManagement", params = "addSchedule", method = RequestMethod.POST)
+    public String addSchedule(Model model){
+        model.addAttribute("schedule", new Schedule());
+        return "addSchedule";
     }
 }
