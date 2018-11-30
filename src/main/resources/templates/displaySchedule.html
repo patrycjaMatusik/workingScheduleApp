@@ -43,14 +43,15 @@
             <td th:text="${schedule.start_working_hour}"></td>
             <td th:text="${schedule.end_working_hour}"></td>
             <form th:action="@{/processSchedules}" method="post">
-                <input type="hidden" th:value="*{schedule.id}" name="id"/>
-                <input type="hidden" th:value="*{worker.id}" name="id"/>
-                <td><button type="submit" class="btn btn-primary" name="delete">Delete</button></td>
-            <td><button type="submit" class="btn btn-primary" name="edit">Edit</button></td>
+                <input type="hidden" th:value="*{schedule.schedule_id}" name="schedule_id"/>
+                <input type="hidden" th:value="*{worker.worker_id}" name="worker_id"/>
+                <td><button type="submit" class="btn btn-primary" name="delete">Delete</button>
+                    <button type="submit" class="btn btn-primary" name="edit">Edit</button></td>
             </form>
         </tr>
         </tbody>
     </table>
     </div>
+
 </body>
 </html>

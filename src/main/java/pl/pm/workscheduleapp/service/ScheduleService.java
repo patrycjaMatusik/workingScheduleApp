@@ -29,6 +29,7 @@ public class ScheduleService {
     @Transactional
     public void deleteScheduleFromWorker(Schedule schedule, Worker worker){
         worker.getSchedules().remove(schedule);
+        schedule.getWorkers().remove(worker);
     }
 
 }

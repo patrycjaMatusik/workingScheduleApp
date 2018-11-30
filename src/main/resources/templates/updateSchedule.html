@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Edit schedule</h1>
-<form th:action="@{/editSchedule/__${mySchedule.id}__}" th:object="${mySchedule}" method="get">
+<form th:action="@{/editSchedule/__${mySchedule.schedule_id}__}" th:object="${mySchedule}" method="get">
     <input type="date" th:value="${mySchedule.work_date}" th:field="*{work_date}"><br>
     <input type="time" th:value="${mySchedule.start_working_hour}" th:field="*{start_working_hour}" placeholder="Start"><br>
     <input type="time" th:value="${mySchedule.end_working_hour}" th:field="*{end_working_hour}" placeholder="End"><br>

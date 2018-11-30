@@ -8,7 +8,7 @@ import java.util.List;
 public class Worker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long worker_id;
     @Column(length = 100)
     private String name;
     @Column(length = 100)
@@ -22,8 +22,8 @@ public class Worker {
                     CascadeType.PERSIST,
             })
     @JoinTable(name = "workers_schedules",
-            joinColumns = @JoinColumn(name = "worker_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "worker_id", referencedColumnName = "worker_id"),
+            inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "schedule_id"))
 
     private List<Schedule> schedules;
 
@@ -35,12 +35,12 @@ public class Worker {
         this.schedules = schedules;
     }
 
-    public Long getId() {
-        return id;
+    public Long getWorker_id() {
+        return worker_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setWorker_id(Long worker_id) {
+        this.worker_id = worker_id;
     }
 
     public String getName() {

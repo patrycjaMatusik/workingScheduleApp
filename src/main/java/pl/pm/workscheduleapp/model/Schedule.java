@@ -8,7 +8,7 @@ import java.util.List;
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long schedule_id;
     private String work_date;
     private String start_working_hour;
     private String end_working_hour;
@@ -26,12 +26,12 @@ public class Schedule {
         this.workers = workers;
     }
 
-    public Long getId() {
-        return id;
+    public Long getSchedule_id() {
+        return schedule_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSchedule_id(Long schedule_id) {
+        this.schedule_id = schedule_id;
     }
 
     public String getWork_date() {

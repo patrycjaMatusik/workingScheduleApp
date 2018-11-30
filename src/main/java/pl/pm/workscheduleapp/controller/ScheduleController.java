@@ -38,7 +38,7 @@ public class ScheduleController {
 
     @RequestMapping(value = "/processSchedules", params = "edit", method = RequestMethod.POST)
     public String editSchedule(Model model, Schedule schedule){
-        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule.getId());
+        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule.getSchedule_id());
         scheduleById.ifPresent(loadedSchedule -> model.addAttribute("mySchedule", loadedSchedule));
         return scheduleById.map(loadedSchedule -> "updateSchedule").orElse("noSchedule");
     }
@@ -52,11 +52,16 @@ public class ScheduleController {
     @RequestMapping(value = "/processSchedules", params = "delete", method = RequestMethod.POST)
     @ResponseBody
     public String deleteSchedule(Schedule schedule, Worker worker){
-        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule.getId());
+        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule.getSchedule_id());
         Schedule scheduleToRemove = scheduleById.get();
-        Optional<Worker> workerById = workerRepository.findById(worker.getId());
+        Optional<Worker> workerById = workerRepository.findById(worker.getWorker_id());
         Worker workerToRemoveFrom = workerById.get();
         scheduleService.deleteScheduleFromWorker(scheduleToRemove, workerToRemoveFrom);
         return "Deleted";
+    }
+
+    @GetMapping("/manageWorkSchedule")
+    public String manageWorkSchedule(){
+        return "manageWorkSchedule";
     }
 }

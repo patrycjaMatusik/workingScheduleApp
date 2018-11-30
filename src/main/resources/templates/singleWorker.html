@@ -14,6 +14,7 @@
     <p th:text="|Address: ${worker.address}|"></p>
     <p th:text="|Phone number: ${worker.phoneNumber}|"></p>
     <form th:action="@{/processSingleWorker}" method="post" th:object="${worker}">
+        <input type="hidden" th:field="*{worker_id}" th:value="${worker.worker_id}"/>
         <input type="hidden" th:field="*{surname}" th:value="${worker.surname}"/>
         <input type="hidden" th:field="*{name}" th:value="${worker.name}"/>
         <input type="hidden" th:field="*{address}" th:value="${worker.address}"/>
