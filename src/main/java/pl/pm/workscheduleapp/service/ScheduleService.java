@@ -6,6 +6,7 @@ import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.ScheduleRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,4 +33,12 @@ public class ScheduleService {
         schedule.getWorkers().remove(worker);
     }
 
+
+    @Transactional
+    public void deleteSchedule(List<Worker> allWorkers, Schedule schedule) {
+        for (Worker worker: allWorkers) {
+            worker.getSchedules().remove(schedule);
+        }
+        scheduleRepository.delete(schedule);
+    }
 }

@@ -56,7 +56,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/manageWorkSchedules")
-    public String manageWorkSchedule(Model model){
+    public String manageWorkSchedules(Model model){
         List<Schedule> allSchedules = scheduleRepository.findAll();
         model.addAttribute(allSchedules);
         return "manageWorkSchedules";
@@ -66,5 +66,14 @@ public class ScheduleController {
     public String addSchedule(Model model){
         model.addAttribute("schedule", new Schedule());
         return "addSchedule";
+    }
+
+    @RequestMapping(value = "scheduleManagement", params = "deleteSchedule", method = RequestMethod.POST)
+    public String deleteSchedule(Model model, @RequestParam(name = "schedule_id") Long schedule_id){
+        Optional<Schedule> byId = scheduleRepository.findById(schedule_id);
+        Schedule schedule = byId.get();
+        List<Worker> allWorkers = workerRepository.findAll();
+        scheduleService.deleteSchedule(allWorkers, schedule);
+        return manageWorkSchedules(model);
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.WorkerRepository;
 import pl.pm.workscheduleapp.service.WorkerService;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
