@@ -3,12 +3,14 @@ package pl.pm.workscheduleapp.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import pl.pm.workscheduleapp.model.Schedule;
 import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.ScheduleRepository;
 import pl.pm.workscheduleapp.repository.WorkerRepository;
 import pl.pm.workscheduleapp.service.ScheduleService;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,14 +47,13 @@ public class ScheduleController {
     }
 
     @RequestMapping(value = "/processSchedules", params = "delete", method = RequestMethod.POST)
-    @ResponseBody
-    public String deleteSchedule(Schedule schedule, Worker worker){
+    public ModelAndView deleteSchedule(Schedule schedule, Worker worker){
         Optional<Schedule> scheduleById = scheduleRepository.findById(schedule.getSchedule_id());
         Schedule scheduleToRemove = scheduleById.get();
         Optional<Worker> workerById = workerRepository.findById(worker.getWorker_id());
         Worker workerToRemoveFrom = workerById.get();
         scheduleService.deleteScheduleFromWorker(scheduleToRemove, workerToRemoveFrom);
-        return "Deleted";
+        return new ModelAndView("redirect:/worker/" + workerToRemoveFrom.getSurname() + "/" + workerToRemoveFrom.getName());
     }
 
     @GetMapping("/manageWorkSchedules")
@@ -75,5 +76,29 @@ public class ScheduleController {
         List<Worker> allWorkers = workerRepository.findAll();
         scheduleService.deleteSchedule(allWorkers, schedule);
         return manageWorkSchedules(model);
+    }
+
+    @PostMapping("/addScheduleToWorker")
+    public String  addScheduleToWorker(Model model, @RequestParam(name = "worker_id") Long worker_id){
+        Optional<Worker> workerById = workerRepository.findById(worker_id);
+        Worker worker = workerById.get();
+        model.addAttribute("worker", worker);
+        List<Schedule> allSchedules = scheduleRepository.findAll();
+        model.addAttribute("allSchedules", allSchedules);
+        return "addScheduleToWorker";
+    }
+
+    @PostMapping("addChosenScheduleToWorker")
+    public ModelAndView addChosenScheduleToWorker(@RequestParam(name = "schedule_id") Long schedule_id, @RequestParam(name = "worker_id") Long worker_id){
+        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule_id);
+        Schedule chosenSchedule = scheduleById.get();
+        Optional<Worker> workerById = workerRepository.findById(worker_id);
+        Worker worker = workerById.get();
+        try {
+            scheduleService.addScheduleToWorker(chosenSchedule, worker);
+        }catch (Exception e){
+            return new ModelAndView("/scheduleAlreadyAdded.html");
+        }
+        return new ModelAndView("redirect:/worker/" + worker.getSurname() + "/" + worker.getName());
     }
 }

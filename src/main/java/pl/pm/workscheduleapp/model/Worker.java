@@ -23,7 +23,8 @@ public class Worker {
             })
     @JoinTable(name = "workers_schedules",
             joinColumns = @JoinColumn(name = "worker_id", referencedColumnName = "worker_id"),
-            inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "schedule_id"))
+            inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "schedule_id"),
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"schedule_id", "worker_id"})})
 
     private List<Schedule> schedules;
 

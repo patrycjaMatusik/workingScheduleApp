@@ -50,6 +50,10 @@
         </tr>
         </tbody>
     </table>
+        <form th:action="@{/addScheduleToWorker}" method="post">
+            <input type="hidden" th:value="*{worker.worker_id}" name="worker_id"/>
+        <button type="submit" class="btn btn-primary">Add schedule</button>
+        </form>
     </div>
 
 </body>

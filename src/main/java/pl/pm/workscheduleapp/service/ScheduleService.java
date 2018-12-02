@@ -41,4 +41,10 @@ public class ScheduleService {
         }
         scheduleRepository.delete(schedule);
     }
+
+    @Transactional
+    public void addScheduleToWorker(Schedule chosenSchedule, Worker worker) {
+        worker.getSchedules().add(chosenSchedule);
+        chosenSchedule.getWorkers().add(worker);
+    }
 }
