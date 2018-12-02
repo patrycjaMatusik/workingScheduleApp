@@ -73,6 +73,18 @@ public class ScheduleController {
         return "addSchedule";
     }
 
+    @RequestMapping(value = "scheduleManagement", params = "showWorkers", method = RequestMethod.POST)
+    public String showWorkers(Model model, @RequestParam(name = "schedule_id", required = false) Long schedule_id) {
+        if(schedule_id!=null){
+            Optional<Schedule> scheduleById = scheduleRepository.findById(schedule_id);
+            List<Worker> workers = scheduleById.get().getWorkers();
+            model.addAttribute("workers", workers);
+            return "workersOnShift";
+        }else{
+            return "chooseOption";
+        }
+    }
+
     @RequestMapping(value = "scheduleManagement", params = "deleteSchedule", method = RequestMethod.POST)
     public String deleteSchedule(Model model, @RequestParam(name = "schedule_id", required = false) Long schedule_id) {
         if (schedule_id != null) {
