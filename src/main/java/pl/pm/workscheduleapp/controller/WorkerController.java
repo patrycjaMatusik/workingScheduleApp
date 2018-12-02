@@ -120,6 +120,7 @@ public class WorkerController {
     public String searchPhrase(Model model, @RequestParam String searchPhrase){
         List<Worker> workers = workerService.searchWorkerLike(searchPhrase);
         model.addAttribute("workers", workers);
+        model.addAttribute("oldPhrase", searchPhrase);
         return "allWorkers";
     }
 }
