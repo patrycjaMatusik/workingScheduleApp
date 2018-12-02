@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>Edit</title>
 </head>
 <body>
@@ -11,7 +15,8 @@
         <input type="text" th:field="*{surname}" th:value="${worker.surname}"><br>
         <input type="text" th:field="*{address}" th:value="${worker.address}"><br>
         <input type="text" th:field="*{phoneNumber}" th:value="${worker.phoneNumber}"><br>
-        <button type="submit">Update</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </body>
+<a href="/" class="btn btn-primary">Go to main page</a>
 </html>

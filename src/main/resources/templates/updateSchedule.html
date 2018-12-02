@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>Add schedule</title>
 </head>
 <body>
@@ -10,7 +14,8 @@
     <input type="date" th:value="${mySchedule.work_date}" th:field="*{work_date}"><br>
     <input type="time" th:value="${mySchedule.start_working_hour}" th:field="*{start_working_hour}" placeholder="Start"><br>
     <input type="time" th:value="${mySchedule.end_working_hour}" th:field="*{end_working_hour}" placeholder="End"><br>
-    <button type="submit">Save</button>
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
+<a href="/" class="btn btn-primary">Go to main page</a>
 </body>
 </html>
