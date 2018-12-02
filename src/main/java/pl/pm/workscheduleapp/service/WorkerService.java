@@ -7,6 +7,8 @@ import pl.pm.workscheduleapp.model.Worker;
 import pl.pm.workscheduleapp.repository.WorkerRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,5 +28,13 @@ public class WorkerService {
         workerToUpdate.setSurname(newSurname);
         workerToUpdate.setAddress(neAddress);
         workerToUpdate.setPhoneNumber(newPhoneNumber);
+    }
+
+
+    public List<Worker> searchWorkerLike(String searchPhrase) {
+        Optional<List<Worker>> bySurnameContaining = workerRepository.findBySurnameOrNameIgnoreCaseContaining("%" + searchPhrase + "%");
+        if(bySurnameContaining.isPresent())
+            return bySurnameContaining.get();
+        return new ArrayList<>();
     }
 }

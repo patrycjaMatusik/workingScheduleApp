@@ -28,26 +28,30 @@ public class ScheduleController {
     }
 
     @PostMapping("/saveSchedule")
-    public String addWorker(Schedule schedule){
+    public String addWorker(Schedule schedule) {
         scheduleRepository.save(schedule);
         return "success";
     }
 
     @RequestMapping(value = "/scheduleManagement", params = "editSchedule", method = RequestMethod.POST)
-    public String editSchedule(Model model, @RequestParam(name = "schedule_id") Long schedule_id){
-        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule_id);
-        scheduleById.ifPresent(loadedSchedule -> model.addAttribute("mySchedule", loadedSchedule));
-        return scheduleById.map(loadedSchedule -> "updateSchedule").orElse("noSchedule");
+    public String editSchedule(Model model, @RequestParam(name = "schedule_id", required = false) Long schedule_id) {
+        if (schedule_id != null) {
+            Optional<Schedule> scheduleById = scheduleRepository.findById(schedule_id);
+            scheduleById.ifPresent(loadedSchedule -> model.addAttribute("mySchedule", loadedSchedule));
+            return scheduleById.map(loadedSchedule -> "updateSchedule").orElse("noSchedule");
+        } else {
+            return "chooseOption";
+        }
     }
 
     @GetMapping("/editSchedule/{id}")
-    public String updateSchedule(@PathVariable(name = "id") Long id, Schedule schedule){
+    public String updateSchedule(@PathVariable(name = "id") Long id, Schedule schedule) {
         scheduleService.updateSchedule(id, schedule.getWork_date(), schedule.getStart_working_hour(), schedule.getEnd_working_hour());
         return "successUpdating";
     }
 
     @RequestMapping(value = "/processSchedules", params = "delete", method = RequestMethod.POST)
-    public ModelAndView deleteSchedule(Schedule schedule, Worker worker){
+    public ModelAndView deleteSchedule(Schedule schedule, Worker worker) {
         Optional<Schedule> scheduleById = scheduleRepository.findById(schedule.getSchedule_id());
         Schedule scheduleToRemove = scheduleById.get();
         Optional<Worker> workerById = workerRepository.findById(worker.getWorker_id());
@@ -57,29 +61,33 @@ public class ScheduleController {
     }
 
     @GetMapping("/manageWorkSchedules")
-    public String manageWorkSchedules(Model model){
+    public String manageWorkSchedules(Model model) {
         List<Schedule> allSchedules = scheduleRepository.findAll();
         model.addAttribute(allSchedules);
         return "manageWorkSchedules";
     }
 
     @RequestMapping(value = "scheduleManagement", params = "addSchedule", method = RequestMethod.POST)
-    public String addSchedule(Model model){
+    public String addSchedule(Model model) {
         model.addAttribute("schedule", new Schedule());
         return "addSchedule";
     }
 
     @RequestMapping(value = "scheduleManagement", params = "deleteSchedule", method = RequestMethod.POST)
-    public String deleteSchedule(Model model, @RequestParam(name = "schedule_id") Long schedule_id){
-        Optional<Schedule> byId = scheduleRepository.findById(schedule_id);
-        Schedule schedule = byId.get();
-        List<Worker> allWorkers = workerRepository.findAll();
-        scheduleService.deleteSchedule(allWorkers, schedule);
-        return manageWorkSchedules(model);
+    public String deleteSchedule(Model model, @RequestParam(name = "schedule_id", required = false) Long schedule_id) {
+        if (schedule_id != null) {
+            Optional<Schedule> byId = scheduleRepository.findById(schedule_id);
+            Schedule schedule = byId.get();
+            List<Worker> allWorkers = workerRepository.findAll();
+            scheduleService.deleteSchedule(allWorkers, schedule);
+            return manageWorkSchedules(model);
+        } else {
+            return "chooseOption";
+        }
     }
 
     @PostMapping("/addScheduleToWorker")
-    public String  addScheduleToWorker(Model model, @RequestParam(name = "worker_id") Long worker_id){
+    public String addScheduleToWorker(Model model, @RequestParam(name = "worker_id") Long worker_id) {
         Optional<Worker> workerById = workerRepository.findById(worker_id);
         Worker worker = workerById.get();
         model.addAttribute("worker", worker);
@@ -89,16 +97,21 @@ public class ScheduleController {
     }
 
     @PostMapping("addChosenScheduleToWorker")
-    public ModelAndView addChosenScheduleToWorker(@RequestParam(name = "schedule_id") Long schedule_id, @RequestParam(name = "worker_id") Long worker_id){
-        Optional<Schedule> scheduleById = scheduleRepository.findById(schedule_id);
-        Schedule chosenSchedule = scheduleById.get();
-        Optional<Worker> workerById = workerRepository.findById(worker_id);
-        Worker worker = workerById.get();
-        try {
-            scheduleService.addScheduleToWorker(chosenSchedule, worker);
-        }catch (Exception e){
-            return new ModelAndView("/scheduleAlreadyAdded.html");
+    public ModelAndView addChosenScheduleToWorker(@RequestParam(name = "schedule_id", required = false) Long schedule_id, @RequestParam(name = "worker_id") Long worker_id) {
+        if (schedule_id != null) {
+            Optional<Schedule> scheduleById = scheduleRepository.findById(schedule_id);
+            Schedule chosenSchedule = scheduleById.get();
+            Optional<Worker> workerById = workerRepository.findById(worker_id);
+            Worker worker = workerById.get();
+            try {
+                scheduleService.addScheduleToWorker(chosenSchedule, worker);
+            } catch (Exception e) {
+                return new ModelAndView("/scheduleAlreadyAdded.html");
+            }
+            return new ModelAndView("redirect:/worker/" + worker.getSurname() + "/" + worker.getName());
+        } else {
+            return new ModelAndView("chooseOption");
         }
-        return new ModelAndView("redirect:/worker/" + worker.getSurname() + "/" + worker.getName());
     }
 }
+
