@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="stylesheet" type="text/css" href="../layout/css/mystyle.css">
+
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-    <!--<script type="text/javascript" src="../js/autosubmit.js"></script>-->
+    <!--<script type="text/javascript" src="../layout/javascript/autosubmit.js"></script>
+    <link rel="stylesheet" type="text/css" href="../layout/css/mystyle.css"/>-->
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             var input = $("#auto_submit_item");
             input.keyup(function () {
                 $(this).parents("#form").submit();
@@ -20,40 +22,76 @@
             input[0].setSelectionRange(len, len);
         });
     </script>
+
     <title>All workers</title>
+
+    <style>
+        .css-serial {
+            counter-reset: serial-number; /* Set the serial number counter to 0 */
+        }
+        .css-serial td:first-child:before {
+            counter-increment: serial-number; /* Increment the serial number counter */
+            content: counter(serial-number); /* Display the counter */
+        }
+    </style>
 </head>
 <body>
-<h3>Sort employees by: </h3>
-<form method="post" th:action="@{/sort}">
-    <input type="radio" name="sortingType" value="surname" checked="checked"> Surname <br>
-    <input type="radio" name="sortingType" value="name"> Name <br>
-
-    <br>
-    <h3>Sort ascending/descending: </h3>
-
-    <input type="radio" name="ascendingChosen" value="True" checked="checked"> Ascending <br>
-    <input type="radio" name="ascendingChosen" value="False"> Descending <br>
-    <br>
-    <input type="submit" value="SORT" class="btn btn-primary">
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h3>Sort employees by: </h3>
+            <form method="post" th:action="@{/sort}">
+                <input type="radio" name="sortingType" value="surname" checked="checked"> Surname <br>
+                <input type="radio" name="sortingType" value="name"> Name <br>
+        </div>
+        <div class="col-sm">
+            <h3>Sort ascending/descending: </h3>
+            <input type="radio" name="ascendingChosen" value="True" checked="checked"> Ascending <br>
+            <input type="radio" name="ascendingChosen" value="False"> Descending <br>
+        </div>
+    </div>
+    <div class="row">
+        <input type="submit" value="SORT" class="btn btn-primary">
+        </form>
+    </div>
+</div>
 
 <h3>Search: </h3>
 <form th:action="@{/search}" method="post" th:id="form">
-    <input type="text" th:name="searchPhrase" th:id="auto_submit_item" th:value="${oldPhrase}" autofocus value="value text" autocomplete="off">
+    <input type="text" th:name="searchPhrase" th:id="auto_submit_item" th:value="${oldPhrase}" autofocus
+           value="value text" autocomplete="off">
     <input type="submit" class="btn btn-primary" th:value="OK">
 </form>
 
-<th:block th:each="worker: ${workers}">
-    <ol>
-        <form th:action="@{/processMainPageForm}" method="post" th:object="${worker}">
-            <li th:text="|${worker.name} ${worker.surname}|"></li>
-            <input type="hidden" th:value="*{surname}" name="surname"/>
-            <input type="hidden" th:value="*{name}" name="name"/>
-            <button type="submit" class="btn btn-primary" name="delete">Delete</button>
-            <button type="submit" class="btn btn-primary" name="details">Details</button>
-        </form>
-    </ol>
-</th:block>
+<h1>List of employees</h1>
+<div class="container" margin="auto" width="300px">
+    <table class="table table-bordered css-serial">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Manage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="worker: ${workers}">
+            <form th:action="@{/processMainPageForm}" method="post" th:object="${worker}">
+                <input type="hidden" th:value="*{surname}" name="surname"/>
+                <input type="hidden" th:value="*{name}" name="name"/>
+                <td>&nbsp;</td>
+                <td th:text="${worker.name}"></td>
+                <td th:text="${worker.surname}"></td>
+                <td>
+                    <button type="submit" class="btn btn-primary" name="delete">Delete</button>
+                    <button type="submit" class="btn btn-primary" name="details">Details</button>
+                </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 <form th:action="@{/add}" method="get">
     <button type="submit" name="addWorker" class="btn btn-primary">Add new worker</button>
 </form>
