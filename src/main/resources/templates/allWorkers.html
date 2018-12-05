@@ -1,34 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:max-height="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" type="text/css" href="../layout/css/mystyle.css">
+    <link rel="stylesheet" type="text/css" href="../static/mystyle.css">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-    <!--<script type="text/javascript" src="../layout/javascript/autosubmit.js"></script>
-    <link rel="stylesheet" type="text/css" href="../layout/css/mystyle.css"/>-->
-    <script>
-        $(document).ready(function () {
-            var input = $("#auto_submit_item");
-            input.keyup(function () {
-                $(this).parents("#form").submit();
-            });
-            var len = input.val().length;
-            input[0].focus();
-            input[0].setSelectionRange(len, len);
-        });
-    </script>
-
     <title>All workers</title>
-
+    <script type="text/javascript" src="/autosubmit.js"></script>
+    <link href="/mystyle.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
     <style>
         .css-serial {
             counter-reset: serial-number; /* Set the serial number counter to 0 */
         }
+
         .css-serial td:first-child:before {
             counter-increment: serial-number; /* Increment the serial number counter */
             content: counter(serial-number); /* Display the counter */
@@ -36,67 +28,92 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container-narrow">
+
+    <h1>List of employees</h1>
+    <div class="container div-stand-out" margin="auto" width="300px" style="height:240px; overflow:auto;">
+        <table class="table table-bordered css-serial">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Surname</th>
+                <th scope="col">Manage</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="worker: ${workers}">
+                <form th:action="@{/processMainPageForm}" method="post" th:object="${worker}">
+                    <input type="hidden" th:value="*{surname}" name="surname"/>
+                    <input type="hidden" th:value="*{name}" name="name"/>
+                    <td>&nbsp;</td>
+                    <td th:text="${worker.name}"></td>
+                    <td th:text="${worker.surname}"></td>
+                    <td>
+                        <button type="submit" class="btn btn-success" name="delete">Delete</button>
+                        <button type="submit" class="btn btn-success" name="details">Details</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+<br>
     <div class="row">
-        <div class="col-sm">
-            <h3>Sort employees by: </h3>
-            <form method="post" th:action="@{/sort}">
-                <input type="radio" name="sortingType" value="surname" checked="checked"> Surname <br>
-                <input type="radio" name="sortingType" value="name"> Name <br>
-        </div>
-        <div class="col-sm">
-            <h3>Sort ascending/descending: </h3>
-            <input type="radio" name="ascendingChosen" value="True" checked="checked"> Ascending <br>
-            <input type="radio" name="ascendingChosen" value="False"> Descending <br>
+        <div class="col-sm"></div>
+        <div class="col-sm offset-sm-2">
+            <div class="input-group mb-3">
+                <form th:action="@{/search}" method="post" th:id="form">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Search</span>
+                        <input type="text" class="form-control" th:name="searchPhrase" th:id="auto_submit_item"
+                               th:value="${oldPhrase}" autofocus
+                               value="value text" autocomplete="off">
+                        <input type="submit" class="btn btn-success" th:value="OK">
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <input type="submit" value="SORT" class="btn btn-primary">
-        </form>
-    </div>
-</div>
 
-<h3>Search: </h3>
-<form th:action="@{/search}" method="post" th:id="form">
-    <input type="text" th:name="searchPhrase" th:id="auto_submit_item" th:value="${oldPhrase}" autofocus
-           value="value text" autocomplete="off">
-    <input type="submit" class="btn btn-primary" th:value="OK">
-</form>
-
-<h1>List of employees</h1>
-<div class="container" margin="auto" width="300px">
-    <table class="table table-bordered css-serial">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Manage</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="worker: ${workers}">
-            <form th:action="@{/processMainPageForm}" method="post" th:object="${worker}">
-                <input type="hidden" th:value="*{surname}" name="surname"/>
-                <input type="hidden" th:value="*{name}" name="name"/>
-                <td>&nbsp;</td>
-                <td th:text="${worker.name}"></td>
-                <td th:text="${worker.surname}"></td>
-                <td>
-                    <button type="submit" class="btn btn-primary" name="delete">Delete</button>
-                    <button type="submit" class="btn btn-primary" name="details">Details</button>
-                </td>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h3>Sort employees by: </h3>
+                <form method="post" th:action="@{/sort}">
+                    <input type="radio" name="sortingType" value="surname" checked="checked"> Surname <br>
+                    <input type="radio" name="sortingType" value="name"> Name <br>
+            </div>
+            <div class="col-sm">
+                <h3>Sort ascending/descending: </h3>
+                <input type="radio" name="ascendingChosen" value="True" checked="checked"> Ascending <br>
+                <input type="radio" name="ascendingChosen" value="False"> Descending <br>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <input type="submit" value="SORT" class="btn btn-success btn-block">
             </form>
-        </tr>
-        </tbody>
-    </table>
+        </div>
+    </div>
+<br>
+<div class="form-row">
+    <div class="col">
+    <form th:action="@{/add}" method="get">
+        <button type="submit" name="addWorker" class="btn btn-success btn-block justify-content-center">Add new worker</button>
+    </form>
+    </div>
+    <div class="col">
+    <form th:action="@{/manageWorkSchedules}" method="get">
+        <button type="submit" name="manageWorkSchedules" class="btn btn-success btn-block justify-content-center">Manage work schedules</button>
+    </form>
+    </div>
+</div>
 </div>
 
-<form th:action="@{/add}" method="get">
-    <button type="submit" name="addWorker" class="btn btn-primary">Add new worker</button>
-</form>
-<form th:action="@{/manageWorkSchedules}" method="get">
-    <button type="submit" name="manageWorkSchedules" class="btn btn-primary">Manage work schedules</button>
-</form>
+<script src="/jquery-1.7.2.min.js"></script>
+<script src="/jquery.backstretch.min.js"></script>
+<script type="text/javascript" src="/background.js"></script>
+
 </body>
 </html>
