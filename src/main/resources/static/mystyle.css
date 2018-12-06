@@ -22,11 +22,16 @@ h1 {
 }
 
 .container-narrow {
-    background: url(/img/dust_scratches.png) repeat 0 0;
+    background: url(/img/dust_scratches_tr_last.png) repeat 0 0;
     margin: 0 auto;
     padding: 30px;
     max-width: 900px;
 }
+
+div .normal {
+    background: url(/img/dust_scratches.png) repeat 0 0;
+}
+
 .container-narrow > hr {
     margin: 30px 0;
 }
