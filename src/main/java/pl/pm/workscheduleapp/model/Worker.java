@@ -16,11 +16,7 @@ public class Worker {
     private String address;
     @Column(length = 12)
     private String phoneNumber;
-    @ManyToMany(cascade =
-            {
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-            })
+    @ManyToMany
     @JoinTable(name = "workers_schedules",
             joinColumns = @JoinColumn(name = "worker_id", referencedColumnName = "worker_id"),
             inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "schedule_id"),

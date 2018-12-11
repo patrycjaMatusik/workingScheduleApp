@@ -12,10 +12,7 @@ public class Schedule {
     private String work_date;
     private String start_working_hour;
     private String end_working_hour;
-    @ManyToMany(cascade = {
-            CascadeType.MERGE,
-            CascadeType.PERSIST
-    }, mappedBy = "schedules")
+    @ManyToMany(mappedBy = "schedules")
     private List<Worker> workers;
 
     public List<Worker> getWorkers() {

@@ -12,4 +12,5 @@ insert into workers_schedules(worker_id, schedule_id) values
 ('1', '1'),
 ('1', '2'),
 ('2', '2'),
-('2', '3');
+('2', '3'),
+('3', '3');
